@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const IconEyeClose = ({ className = "", onClick = () => {} }) => {
   return (
     <span className={className} onClick={onClick}>
@@ -31,6 +33,11 @@ const IconEyeClose = ({ className = "", onClick = () => {} }) => {
       </svg>
     </span>
   );
+};
+
+IconEyeClose.propTypes = {
+  className: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default IconEyeClose;

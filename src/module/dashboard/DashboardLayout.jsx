@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../contexts/auth-context";
-import NotFoundPage from "../../pages/NotFoundPage";
+import PageNotFound from "../../pages/PageNotFound";
 import DashboardHeader from "./DashboardHeader";
 import Sidebar from "./Sidebar";
 
@@ -27,15 +27,14 @@ const DashboardStyles = styled.div`
 `;
 const DashboardLayout = ({ children }) => {
   const { userInfo } = useAuth();
-  if (!userInfo) return <NotFoundPage />;
+  if (!userInfo) return <PageNotFound />;
   return (
     <DashboardStyles>
       <DashboardHeader></DashboardHeader>
       <div className="dashboard-main">
-        <Sidebar></Sidebar>
-        <div className="dashboard-children">
-          <Outlet></Outlet>
-        </div>
+        <Sidebar />
+        <Outlet />
+        <div className="dashboard-children"></div>
       </div>
     </DashboardStyles>
   );

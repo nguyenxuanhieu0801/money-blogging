@@ -1,20 +1,33 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../contexts/auth-context";
 import { Button } from "../button";
 
 const menuLinks = [
-  { url: "/", title: "Home" },
-  { url: "/blog", title: "Blog" },
-  { url: "/contact", title: "Contact" },
+  {
+    url: "/",
+    title: "Home",
+  },
+  {
+    url: "/blog",
+    title: "Blog",
+  },
+  {
+    url: "/contact",
+    title: "Contact",
+  },
 ];
 
 const HeaderStyles = styled.header`
-  padding: 40px 0;
+  padding: 20px 0;
   .header-main {
     display: flex;
     align-items: center;
+  }
+  .header-auth {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
   .logo {
     display: block;
@@ -40,13 +53,13 @@ const HeaderStyles = styled.header`
     display: flex;
     align-items: center;
     position: relative;
-    font-weight: 500;
     margin-right: 20px;
   }
 
   .search-input {
     flex: 1;
     padding-right: 45px;
+    font-weight: 500;
   }
   .search-icon {
     position: absolute;
@@ -54,17 +67,18 @@ const HeaderStyles = styled.header`
     transform: translateY(-50%);
     right: 25px;
   }
-
-  .header-button {
-    margin-left: 20px;
+  @media screen and (max-width: 1023.98px) {
+    .logo {
+      max-width: 30px;
+    }
+    .menu,
+    .search,
+    .header-button,
+    .header-auth {
+      display: none;
+    }
   }
 `;
-
-const getLastName = (name) => {
-  if (!name) return "User";
-  const length = name.split(" ").length;
-  return name.split(" ")[length - 1];
-};
 
 const Header = () => {
   const { userInfo } = useAuth();
@@ -74,7 +88,7 @@ const Header = () => {
       <div className="container">
         <div className="header-main">
           <NavLink to="/">
-            <img className="logo" srcSet="/logo.png 2x" alt="monket-blogging" />
+            <img srcSet="/logo.png 2x" alt="monkey-blogging" className="logo" />
           </NavLink>
           <ul className="menu">
             {menuLinks.map((item) => (
@@ -86,7 +100,7 @@ const Header = () => {
             ))}
           </ul>
           <div className="search">
-            <input type="text" className="search-input" placeholder="Search posts ..." />
+            <input type="text" className="search-input" placeholder="Search posts..." />
             <span className="search-icon">
               <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <ellipse cx="7.66669" cy="7.05161" rx="6.66669" ry="6.05161" stroke="#999999" strokeWidth="1.5" />
@@ -106,13 +120,14 @@ const Header = () => {
             </span>
           </div>
           {!userInfo ? (
-            <Button type="button" to="sign-up" style={{ maxWidth: "200px" }} height="56px" className="header-button">
-              Sign Up
+            <Button type="button" height="56px" className="header-button" to="/sign-in">
+              Login
             </Button>
           ) : (
             <div className="header-auth">
-              <strong>Welcome back, </strong>
-              <span className="text-primary">{getLastName(userInfo?.displayName)}</span>
+              <Button type="button" height="56px" className="header-button" to="/dashboard">
+                Dashboard
+              </Button>
             </div>
           )}
         </div>

@@ -13,6 +13,9 @@ const ButtonStyles = styled.button`
   justify-content: center;
   align-items: center;
   background-color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
   ${(props) =>
     props.kind === "secondary" &&
     css`
@@ -23,15 +26,15 @@ const ButtonStyles = styled.button`
     props.kind === "primary" &&
     css`
       color: white;
-      background-image: linear-gradient(
-        to right bottom,
-        ${(props) => props.theme.primary},
-        ${(props) => props.theme.secondary}
-      );
+      background-color: ${(props) => props.theme.primary};
     `};
-  border-radius: 8px;
-  font-weight: 600;
-  font-style: 18px;
+  ${(props) =>
+    props.kind === "ghost" &&
+    css`
+      color: ${(props) => props.theme.primary};
+      background-color: rgba(29, 192, 113, 0.1);
+    `};
+
   &:disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -69,7 +72,7 @@ Button.propTypes = {
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
   children: PropTypes.node,
-  kind: PropTypes.oneOf(["primary", "secondary"]),
+  kind: PropTypes.oneOf(["primary", "secondary", "ghost"]),
 };
 
 export default Button;

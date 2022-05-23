@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const ImageUpload = ({ name, className = "", progress = 0, image, handleDeleteImage = () => {}, ...rest }) => {
   return (
@@ -53,6 +53,14 @@ const ImageUpload = ({ name, className = "", progress = 0, image, handleDeleteIm
       )}
     </label>
   );
+};
+
+ImageUpload.propTypes = {
+  name: PropTypes.string,
+  className: PropTypes.string,
+  progress: PropTypes.number,
+  image: PropTypes.string,
+  handleDeleteImage: PropTypes.func,
 };
 
 export default ImageUpload;

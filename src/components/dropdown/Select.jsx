@@ -1,5 +1,5 @@
-import React from "react";
 import { useDropdown } from "./dropdown-context";
+import PropTypes from "prop-types";
 
 const Select = ({ placeholder = "" }) => {
   const { toogle, show } = useDropdown();
@@ -36,6 +36,10 @@ const Select = ({ placeholder = "" }) => {
       </span>
     </div>
   );
+};
+
+Select.propTypes = {
+  placeholder: PropTypes.string,
 };
 
 export default Select;

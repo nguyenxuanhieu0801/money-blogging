@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconEyeClose, IconEyeOpen } from "../icon";
 import Input from "./Input";
+import PropTypes from "prop-types";
 
 const InputPasswordToggle = ({ control }) => {
   const [togglePassword, setTogglePassword] = useState(false);
@@ -22,6 +23,10 @@ const InputPasswordToggle = ({ control }) => {
       </Input>
     </>
   );
+};
+
+InputPasswordToggle.propTypes = {
+  control: PropTypes.any.isRequired,
 };
 
 export default InputPasswordToggle;

@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, serverTimestamp, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Button } from "../../components/button";
 import { Radio } from "../../components/checkbox";
 import { Dropdown } from "../../components/dropdown";
-import { Field } from "../../components/field";
+import { Field, FieldCheckboxes } from "../../components/field";
 import ImageUpload from "../../components/image/ImageUpload";
 import { Input } from "../../components/input";
 import { Label } from "../../components/label";
@@ -27,22 +27,38 @@ const PostAddNew = () => {
       title: "",
       slug: "",
       status: 2,
-      categoryId: "",
       host: false,
       image: "",
+      category: {},
+      user: {},
     },
   });
   const watchStatus = watch("status");
-  const watchCategory = watch("category");
   const watchHost = watch("host");
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectCategory, setSelectCategory] = useState("");
+
   const { image, progress, handleResetUpload, handleDeleteImage, handleSelectImage } = useFirebaseImage(
     setValue,
     getValues
   );
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!userInfo.email) return;
+      const q = query(collection(db, "users"), where("email", "==", userInfo.email));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setValue("user", {
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+    };
+    fetchUserData();
+  }, [userInfo.email]);
 
   useEffect(() => {
     document.title = "Monkey Blogging App";
@@ -72,7 +88,6 @@ const PostAddNew = () => {
       cloneValue.slug = slugify(values.slug || values.title, { lower: true });
       cloneValue.status = Number(values.status);
       const colRef = collection(db, "posts");
-      console.log(cloneValue);
       await addDoc(colRef, {
         ...cloneValue,
         image,
@@ -84,9 +99,10 @@ const PostAddNew = () => {
         title: "",
         slug: "",
         status: 2,
-        categoryId: "",
         host: false,
         image: "",
+        category: {},
+        user: {},
       });
       handleResetUpload();
       setSelectCategory({});
@@ -97,8 +113,13 @@ const PostAddNew = () => {
     }
   };
 
-  const handleClickOption = (item) => {
-    setValue("categoryId", item.id);
+  const handleClickOption = async (item) => {
+    const colRef = doc(db, "categories", item.id);
+    const docData = await getDoc(colRef);
+    setValue("category", {
+      id: docData.id,
+      ...docData.data(),
+    });
     setSelectCategory(item);
   };
 
@@ -153,7 +174,7 @@ const PostAddNew = () => {
           </Field>
           <Field>
             <Label>Status</Label>
-            <div className="flex items-center gap-x-5">
+            <FieldCheckboxes>
               <Radio
                 name="status"
                 control={control}
@@ -178,7 +199,7 @@ const PostAddNew = () => {
               >
                 Reject
               </Radio>
-            </div>
+            </FieldCheckboxes>
           </Field>
         </div>
 

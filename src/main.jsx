@@ -7,7 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./utils/constants";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.min.css";
+import "sweetalert2/src/sweetalert2.scss";
 
 ReactDOM.render(
   <React.StrictMode>
